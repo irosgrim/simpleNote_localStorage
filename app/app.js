@@ -1,4 +1,4 @@
-let htmlElements = {
+let globalVars = {
     inpt: document.getElementById('inpt'),
     addBtn: document.getElementById('add'),
     lis: document.getElementsByTagName('li'),
@@ -7,9 +7,44 @@ let htmlElements = {
     check: false
 }
 
-let localStorageDb = JSON.parse(localStorage.getItem('getDB'));
+let  localStorageDb = JSON.parse(localStorage.getItem('simpleNoteDB'));
 
-htmlElements.list.addEventListener('click', (e) => {
+function createLocalStorage(name){
+    return new Promise((resolve, reject)=>{
+        let createLocalDB = localStorage.setItem(name, JSON.stringify(db));
+        resolve(createLocalDB);
+        reject('Could not create local DB');
+    })
+}
+
+function createList(){
+    localStorageDb.forEach(element => {
+        list.innerHTML += `
+         <li class="item" data-id="${element.id}*${element.isDone}*${element.date}" style="${lineThrough(element)}">${element.note}<div class="noteDate">${element.date}</div></li>
+         `
+        });
+}
+
+(function checkOrCreateLocalStorage() {
+   
+if (localStorage.getItem('simpleNoteDB') === null) {
+  createLocalStorage('simpleNoteDB').then(()=>{
+    console.log('promise fulfilled');
+    localStorageDb = JSON.parse(localStorage.getItem('simpleNoteDB'));
+    createList();
+    console.log(localStorageDb);
+  } )
+  .catch(err => console.log('some error: '+err))
+  
+} else {
+      createList();
+  }
+
+}());
+
+
+
+globalVars.list.addEventListener('click', (e) => {
 
     let currentNote = e.target;
     let noDateStr = currentNote.innerText.substr(0, currentNote.innerText.length - 19);
@@ -23,16 +58,16 @@ htmlElements.list.addEventListener('click', (e) => {
             noteDate = noteAttributes[2],
             previous = currentNote.previousSibling;
 
-        if (formsUpdate === null && htmlElements.visible === false) {
+        if (formsUpdate === null && globalVars.visible === false) {
 
-            createLi(noDateStr, previous, currentNote, noteId, noteStatus, noteDate, currentNote);
+            entryUpdateForms(noDateStr, previous, currentNote, noteId, noteStatus, noteDate, currentNote);
 
-        } else if (htmlElements.visible === true) {
+        } else if (globalVars.visible === true) {
 
             formsUpdate.remove();
-            htmlElements.visible = false;
+            globalVars.visible = false;
 
-            createLi(noDateStr, previous, currentNote, noteId, noteStatus, noteDate, currentNote);
+            entryUpdateForms(noDateStr, previous, currentNote, noteId, noteStatus, noteDate, currentNote);
 
         }
 
@@ -41,7 +76,51 @@ htmlElements.list.addEventListener('click', (e) => {
 
 })
 
-function createLi(defaultValue, where, theLi, theId, theStatus, theDate, theNote) {
+globalVars.addBtn.addEventListener('click', () => {
+    if (inpt.value !== '') {
+
+        nr = 0;
+
+        localStorageDb.forEach(element => {
+
+            if (element.id > nr) {
+                nr = element.id;
+            }
+        })
+
+        let data = {
+            id: nr + 1,
+            isDone: false,
+            note: globalVars.inpt.value,
+            date: dateToday()
+        }
+
+        localStorageDb.push(data);
+        localStorage.setItem('simpleNoteDB', JSON.stringify(localStorageDb));
+
+        list.innerHTML += `
+        <li class="item" data-id="${data.id}*${data.isDone}*${data.date}" style="${lineThrough(data.isDone)}">${data.note}<div class="noteDate">${data.date}</div></li>
+        `;
+        inpt.value = '';
+    }
+}
+)
+
+window.onclick = (event) => {
+
+    let formsDiv = document.getElementById('formsUpdate');
+
+    if (event.target.className !== 'item' && event.target.className !== 'formsUpdate'
+        && event.target.className !== 'inpt darker' && event.target.className !== 'fas fa-check'
+        && event.target.className !== 'inptUpdate' && event.target.className !== 'far fa-trash-alt'
+        && event.target.className !== 'far fa-square' && event.target.className !== 'far fa-check-square'
+        && formsDiv !== null) {
+        formsDiv.remove();
+        globalVars.visible = false;
+    }
+}
+
+function entryUpdateForms(defaultValue, where, theLi, theId, theStatus, theDate, theNote) {
 
     let newItem = document.createElement('li');
 
@@ -50,10 +129,10 @@ function createLi(defaultValue, where, theLi, theId, theStatus, theDate, theNote
     let checkStyle = '';
     if (theStatus === 'true') {
         checkStyle = 'fa-check-square';
-        htmlElements.check = true;
+        globalVars.check = true;
     } else {
         checkStyle = 'fa-square';
-        htmlElements.check = false;
+        globalVars.check = false;
     }
     newItem.innerHTML = `
        <div class="formsUpdate">
@@ -93,11 +172,11 @@ function createLi(defaultValue, where, theLi, theId, theStatus, theDate, theNote
             updateBtn.addEventListener('click', () => {
                 console.log('click');
                 localStorageDb[i].note = inptModify.value;
-                localStorage.setItem('getDB', JSON.stringify(localStorageDb));
-                theLi.dataset.id = `${theId}*${htmlElements.check}*${dateToday()}`;
+                localStorage.setItem('simpleNoteDB', JSON.stringify(localStorageDb));
+                theLi.dataset.id = `${theId}*${globalVars.check}*${dateToday()}`;
                 theLi.innerHTML = inptModify.value + `<div class="noteDate">${dateToday()}</div>`;
                 formsUpdate.remove();
-                htmlElements.visible = false;
+                globalVars.visible = false;
             })
         }
     }
@@ -112,9 +191,9 @@ function createLi(defaultValue, where, theLi, theId, theStatus, theDate, theNote
         })
         
         localStorageDb.splice( localStorageDb.indexOf(arr), 1);
-        localStorage.setItem('getDB', JSON.stringify(localStorageDb));
+        localStorage.setItem('simpleNoteDB', JSON.stringify(localStorageDb));
         formsUpdate.remove();
-        htmlElements.visible = false;
+        globalVars.visible = false;
         theNote.remove();
 
     });
@@ -122,93 +201,40 @@ function createLi(defaultValue, where, theLi, theId, theStatus, theDate, theNote
     doneBtn.addEventListener('click', () => {
 
         console.log('--------', theNote.matches('li.item.done'));
-        if (htmlElements.check === false) {
+        if (globalVars.check === false) {
 
             checkBtn.classList.remove('fa-square');
             checkBtn.classList.add('fa-check-square');
             theNote.style.textDecoration = 'line-through';
-            htmlElements.check = true;
-            theLi.dataset.id = `${theId}*${htmlElements.check}*${dateToday()}`;
+            globalVars.check = true;
+            theLi.dataset.id = `${theId}*${globalVars.check}*${dateToday()}`;
 
         } else {
             theNote.style.textDecoration = 'none';
             checkBtn.classList.remove('fa-check-square');
             checkBtn.classList.add('fa-square');
-            htmlElements.check = false;
-            theLi.dataset.id = `${theId}*${htmlElements.check}*${dateToday()}`;
+            globalVars.check = false;
+            theLi.dataset.id = `${theId}*${globalVars.check}*${dateToday()}`;
 
 
         }
         if (theStatus === 'false') {
             localStorageDb[theId].isDone = true;
-            localStorage.setItem('getDB', JSON.stringify(localStorageDb));
+            localStorage.setItem('simpleNoteDB', JSON.stringify(localStorageDb));
         } else {
             localStorageDb[theId].isDone = false;
-            localStorage.setItem('getDB', JSON.stringify(localStorageDb));
+            localStorage.setItem('simpleNoteDB', JSON.stringify(localStorageDb));
         }
         // console.log(local_db[theId].isDone);
         formsUpdate.remove();
-        htmlElements.visible = false;
+        globalVars.visible = false;
 
     });
 
-    htmlElements.visible = true;
+    globalVars.visible = true;
 
 }
 
-// uncomment this to create the local DB
-//localStorage.setItem('getDB', JSON.stringify(db));
-
-
-localStorageDb.forEach(element => {
-    list.innerHTML += `
-     <li class="item" data-id="${element.id}*${element.isDone}*${element.date}" style="${lineThrough(element)}">${element.note}<div class="noteDate">${element.date}</div></li>
-     `
-})
-
-htmlElements.addBtn.addEventListener('click', () => {
-    if (inpt.value !== '') {
-
-        nr = 0;
-
-        localStorageDb.forEach(element => {
-
-            if (element.id > nr) {
-                nr = element.id;
-            }
-        })
-
-        let data = {
-            id: nr + 1,
-            isDone: false,
-            note: htmlElements.inpt.value,
-            date: dateToday()
-        }
-
-        localStorageDb.push(data);
-        localStorage.setItem('getDB', JSON.stringify(localStorageDb));
-
-        list.innerHTML += `
-        <li class="item" data-id="${data.id}*${data.isDone}*${data.date}" style="${lineThrough(data.isDone)}">${data.note}<div class="noteDate">${data.date}</div></li>
-        `;
-        inpt.value = '';
-    }
-}
-)
-
-window.onclick = (event) => {
-
-    let formsDiv = document.getElementById('formsUpdate');
-
-    if (event.target.className !== 'item' && event.target.className !== 'formsUpdate'
-        && event.target.className !== 'inpt darker' && event.target.className !== 'fas fa-check'
-        && event.target.className !== 'inptUpdate' && event.target.className !== 'far fa-trash-alt'
-        && event.target.className !== 'far fa-square' && event.target.className !== 'far fa-check-square'
-        && formsDiv !== null) {
-        formsDiv.remove();
-        htmlElements.visible = false;
-    }
-}
 function lineThrough(element) {
 
     if (element.isDone === true) {
