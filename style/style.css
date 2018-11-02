@@ -1,0 +1,174 @@
+*{
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+body{
+    background-color: #f5f5f5;
+    text-align: center;
+    color: #535353;
+    font-size: 1.1rem;
+}
+
+.root{
+    position: relative;
+    background-color: #fff;
+    width: 50vw;
+    min-height: 300px;
+    
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 10px;
+    border-top: 10px solid #dbecc2;
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+    border-bottom-left-radius: 5%;
+    border-bottom-right-radius: 5%;
+    animation-name: movefrombottom;
+    animation-duration: 1s
+    
+
+}
+
+@-webkit-keyframes movefrombottom {
+    from {bottom:-100px; opacity:0} 
+    to {top:0; opacity:1}
+}
+
+@keyframes movefrombottom {
+    from {bottom:-100px; opacity:0}
+    to {top:0; opacity:1}
+}
+
+.forms{
+    background-color: #dbecc2;
+    padding-bottom: 10px;
+}
+
+.inpt{
+    display: inline-block;
+    width: 300px;
+    height: 30px;
+    outline: 0;
+    border: 0;
+    font-size: 16px;
+    padding-left: 10px;
+}
+
+.darker{
+    background-color: #dbecc2;
+}
+
+.inpt:focus{
+    background-color: #f2f8e8;
+    border-left: 5px solid #a0cf59;
+}
+.btn{
+    vertical-align: bottom;
+    text-align: center;
+    font-size: 18px;
+    font-weight: 700;
+    color: #8b8b8b;
+    height: 30px;
+    width: 30px;
+}
+.italic{
+    font-style: italic;
+    color: #6d9432;
+}
+.formsUpdate{
+    display: grid;
+    grid-template-columns: 1fr 70px;
+    position: relative;
+    margin-bottom: 5px;
+    height: 50px;
+    padding-bottom: 5px;
+    -webkit-animation-name: animatetop;
+    -webkit-animation-duration: 0.4s;
+    animation-name: animatetop;
+    animation-duration: 0.4s
+    
+}
+
+@-webkit-keyframes animatetop {
+    from {top:-10px; opacity:0} 
+    to {top:0; opacity:1}
+}
+
+@keyframes animatetop {
+    from {top:-10px; opacity:0}
+    to {top:0; opacity:1}
+}
+
+
+.formLi{
+    height: 50px
+}
+.notes{
+    padding-top: 20px;
+    padding-left: 20px;
+    padding-right: 20px;
+    text-align: left;
+    margin-bottom: 20px;
+    padding-bottom: 50px;
+}
+.item{
+    display: grid;
+    grid-template-columns: 1fr 150px;
+}
+.noteDate{
+    font-size: 0.9rem;
+    padding-top: 5px;
+    color: #b4b4b4;
+}
+
+.done{
+    text-decoration: line-through;
+}
+
+ul{
+    list-style-type: none;
+    
+}
+ul li{
+    
+    border-bottom: 1px solid #d3d2d2;
+    padding-left: 10px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    transition: 0.7s;
+}
+
+ul li:hover{
+    background-color: #f8f7f7;
+}
+
+.footer{
+    position: absolute;
+    color: #c4c1c1;
+    bottom: 10px;
+    left: 40%;
+   
+    
+}
+@media only screen and (max-width: 480px){
+body{
+    
+}
+
+}
+
+@media only screen and (min-width: 481px) and (max-width: 767px){
+
+
+}
+
+@media only screen and (min-width: 768px) and (max-width: 991px){
+
+    
+}
+
+@media only screen and (min-width: 992px){
+    
+  
+    }
