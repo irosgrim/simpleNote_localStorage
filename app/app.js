@@ -156,9 +156,9 @@ function createLi(defaultValue, where, theLi, theId, theStatus, theDate, theNote
 
 }
 
-
+// uncomment this to create the local DB
 //localStorage.setItem('getDB', JSON.stringify(db));
-//const localDB = JSON.parse(localStorage.getItem('getDB'));
+
 
 localStorageDb.forEach(element => {
     list.innerHTML += `
