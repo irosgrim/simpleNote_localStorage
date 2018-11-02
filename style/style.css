@@ -16,7 +16,6 @@ body{
     background-color: #fff;
     width: 50vw;
     min-height: 300px;
-    
     margin-left: auto;
     margin-right: auto;
     margin-top: 10px;
@@ -47,7 +46,7 @@ body{
 
 .inpt{
     display: inline-block;
-    width: 300px;
+    width: 30%;
     height: 30px;
     outline: 0;
     border: 0;
@@ -155,20 +154,53 @@ ul li:hover{
 body{
     
 }
+.root{
+    width: 95vw;
+}
+.inpt{
+   
+    width: 70%;
+    
+}
 
 }
 
 @media only screen and (min-width: 481px) and (max-width: 767px){
 
+    .root{
+        width: 90vw;
+    }
+    .inpt{
+       
+        width: 60%;
+        
+    }
 
 }
 
 @media only screen and (min-width: 768px) and (max-width: 991px){
 
+    .root{
+        width: 80vw;
+    }
+    .inpt{
+       
+        width: 60%;
+        
+    }
+
     
 }
 
 @media only screen and (min-width: 992px){
-    
+  
+    .root{
+        width: 55vw;
+    }
+    .inpt{
+       
+        width: 50%;
+        
+    }
   
     }

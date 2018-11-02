@@ -29,7 +29,7 @@ function createList(){
    
 if (localStorage.getItem('simpleNoteDB') === null) {
   createLocalStorage('simpleNoteDB').then(()=>{
-    console.log('promise fulfilled');
+    console.log('good to go. LocalStorage DB created');
     localStorageDb = JSON.parse(localStorage.getItem('simpleNoteDB'));
     createList();
     console.log(localStorageDb);
@@ -78,15 +78,12 @@ globalVars.list.addEventListener('click', (e) => {
 
 globalVars.addBtn.addEventListener('click', () => {
     if (inpt.value !== '') {
-
         nr = 0;
-
         localStorageDb.forEach(element => {
-
             if (element.id > nr) {
                 nr = element.id;
             }
-        })
+        });
 
         let data = {
             id: nr + 1,

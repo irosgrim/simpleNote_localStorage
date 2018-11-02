@@ -1,7 +1,8 @@
-let db=[{id: 0, isDone: false, note: 'Hello world', date: dateToday()},
-        {id: 1, isDone: false, note: 'Second note', date: dateToday()},
-        {id: 2, isDone: true, note: 'Third note', date: dateToday()},
-        {id: 3, isDone: true, note: 'Fourth note', date: dateToday()}
+let db=[{id: 0, isDone: true, note: 'Hello world', date: dateToday()},
+        {id: 1, isDone: false, note: 'Create print view', date: dateToday()},
+        {id: 2, isDone: false, note: 'Create list and card views', date: dateToday()},
+        {id: 3, isDone: false, note: 'Create multiple note lists', date: dateToday()},
+        {id: 4, isDone: false, note: 'Reorder notes', date: dateToday()}
     ];
 
 
