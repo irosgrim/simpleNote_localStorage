@@ -12,7 +12,8 @@ let  localStorageDb = JSON.parse(localStorage.getItem('simpleNoteDB'));
 (function checkOrCreateLocalStorage() {
    
 if (localStorage.getItem('simpleNoteDB') === null) {
-  createLocalStorage('simpleNoteDB').then(()=>{
+  createLocalStorage('simpleNoteDB')
+  .then(()=>{
     console.log('good to go. LocalStorage DB created');
     localStorageDb = JSON.parse(localStorage.getItem('simpleNoteDB'));
     createList();
