@@ -9,22 +9,6 @@ let globalVars = {
 
 let  localStorageDb = JSON.parse(localStorage.getItem('simpleNoteDB'));
 
-function createLocalStorage(name){
-    return new Promise((resolve, reject)=>{
-        let createLocalDB = localStorage.setItem(name, JSON.stringify(db));
-        resolve(createLocalDB);
-        reject('Could not create local DB');
-    })
-}
-
-function createList(){
-    localStorageDb.forEach(element => {
-        list.innerHTML += `
-         <li class="item" data-id="${element.id}*${element.isDone}*${element.date}" style="${lineThrough(element)}">${element.note}<div class="noteDate">${element.date}</div></li>
-         `
-        });
-}
-
 (function checkOrCreateLocalStorage() {
    
 if (localStorage.getItem('simpleNoteDB') === null) {
@@ -197,7 +181,6 @@ function entryUpdateForms(defaultValue, where, theLi, theId, theStatus, theDate,
 
     doneBtn.addEventListener('click', () => {
 
-        console.log('--------', theNote.matches('li.item.done'));
         if (globalVars.check === false) {
 
             checkBtn.classList.remove('fa-square');
@@ -239,4 +222,20 @@ function lineThrough(element) {
     } else {
         return 'text-decoration: none';
     }
+}
+
+
+function createLocalStorage(name){
+    return new Promise((resolve, reject)=>{
+        let createLocalDB = localStorage.setItem(name, JSON.stringify(db));
+        resolve(createLocalDB);
+    })
+}
+
+function createList(){
+    localStorageDb.forEach(element => {
+        list.innerHTML += `
+         <li class="item" data-id="${element.id}*${element.isDone}*${element.date}" style="${lineThrough(element)}">${element.note}<div class="noteDate">${element.date}</div></li>
+         `
+        });
 }
