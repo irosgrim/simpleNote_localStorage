@@ -1,2 +1,5 @@
 # simpleNote - Vanilla JS localStorage persistent To DO app
-a simple CRUD project
+
+ - Responsive design
+ - CRUD functions
+ - Local Storage for data persistance
